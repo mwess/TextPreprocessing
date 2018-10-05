@@ -71,20 +71,20 @@ function transform(tf::Tfidf, documents::AbstractVector{T}) where {T <: Abstract
     end
     documents_tok = map(tf.tokenizer, documents)
     n_docs = length(documents_tok)
-    term_matrix = spzeros(n_docs, length(tf.tm))
+    term_matrix = spzeros(length(tf.tm), n_docs)
     for (doc_ind, doc) in enumerate(documents_tok)
         for i=tf.ngrams[1]:tf.ngrams[2]
             for j=1:length(doc)-i
                 l_idx = join(doc[j:j+i-1], " ")
                 if l_idx in keys(tf.idf)
-                    term_matrix[doc_ind, tf.tm[l_idx]] += 1
+                    term_matrix[tf.tm[l_idx], doc_ind] += 1
                 end
             end
         end
     end
     for i=1:length(n_docs)
         for key in keys(tf.idf)
-            term_matrix[i, tf.tm[key]] *= tf.idf[key]
+            term_matrix[tf.tm[key], i] *= tf.idf[key]
         end
     end
     term_matrix
