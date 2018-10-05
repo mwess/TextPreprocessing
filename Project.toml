@@ -1,0 +1,6 @@
+authors = ["Maxi Wess <maxwess@googlemail.com>"]
+name = "tfidf"
+uuid = "fb0d870a-c8ad-11e8-1790-ff801a08c705"
+version = "0.1.0"
+
+[deps]
