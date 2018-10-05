@@ -2,10 +2,8 @@ function compute_ignore_list(corpus_tok, min_df, max_df, stoplist)
     tokens = unique(vcat(corpus_tok...))
     doc_freqs = Dict{eltype(corpus_tok[1]), Integer}(token => 0 for token in tokens)
     for doc in corpus_tok
-        for key in keys(doc_freqs)
-            if key in doc
-                doc_freqs[key] += 1
-            end
+        for key in unique(doc)
+            doc_freqs[key] += 1
         end
     end
     if min_df >= 1
@@ -18,7 +16,7 @@ function compute_ignore_list(corpus_tok, min_df, max_df, stoplist)
             push!(ignore_list, key)
         end
     end
-    unique(vcat(ignore_list, stoplist))
+    Set(vcat(ignore_list, stoplist))
 end
 
 function convert_to_sparse_matrix(frequencies)
